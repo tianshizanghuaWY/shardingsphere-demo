@@ -37,20 +37,28 @@ public class HealthRecordServiceImpl implements HealthRecordService {
         return result;
     }	
     
-    private HealthRecord insertHealthRecord(final Long i) throws SQLException {
+    private HealthRecord insertHealthRecord(final Long userId) throws SQLException {
     	HealthRecord healthRecord = new HealthRecord();
-    	healthRecord.setUserId(i);
-    	healthRecord.setLevelId(i % 5);
-    	healthRecord.setRemark("Remark" + i);
+    	healthRecord.setUserId(userId);
+    	healthRecord.setLevelId(userId % 5);
+    	healthRecord.setRemark("Remark" + userId);
         healthRecordRepository.addEntity(healthRecord);
         return healthRecord;
     }
-    
-    private void insertHealthTask(final Long i, final HealthRecord healthRecord) throws SQLException {
-    	HealthTask healthTask = new HealthTask();
-    	healthTask.setRecordId(healthRecord.getRecordId());
-    	healthTask.setUserId(i);
-    	healthTask.setTaskName("TaskName" + i);
-    	healthTaskRepository.addEntity(healthTask);
+
+	/**
+	 * record 和 task 一对多的关系
+	 * @param userId
+	 * @param healthRecord
+	 * @throws SQLException
+	 */
+	private void insertHealthTask(final Long userId, final HealthRecord healthRecord) throws SQLException {
+    	for(int i = 1; i < 4; i++){
+			HealthTask healthTask = new HealthTask();
+			healthTask.setRecordId(healthRecord.getRecordId());
+			healthTask.setUserId(userId);
+			healthTask.setTaskName("TaskName:" + userId + "-" + i);
+			healthTaskRepository.addEntity(healthTask);
+		}
     }
 }

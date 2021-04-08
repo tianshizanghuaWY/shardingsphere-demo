@@ -9,10 +9,19 @@ public class HintManagerHelper {
 		hintManager.addTableShardingValue("health_record", 2L);
 	}
 
-	static void initializeHintManagerForShardingDatabases(final HintManager hintManager) {			
-		hintManager.setDatabaseShardingValue(1L);
+	/**
+	 * 指定 hint 分库策略
+	 * @param hintManager
+	 * @param databaseIdx 分库index
+	 */
+	static void initializeHintManagerForShardingDatabases(final HintManager hintManager, long databaseIdx) {
+		hintManager.setDatabaseShardingValue(databaseIdx);
 	}
 
+	/**
+	 * 强制查询master
+	 * @param hintManager
+	 */
 	static void initializeHintManagerForMaster(final HintManager hintManager) {
 		hintManager.setMasterRouteOnly();
 	}

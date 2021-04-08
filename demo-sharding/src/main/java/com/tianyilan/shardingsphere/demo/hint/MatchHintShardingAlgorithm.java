@@ -14,6 +14,7 @@ public final class MatchHintShardingAlgorithm implements HintShardingAlgorithm<L
         Collection<String> result = new ArrayList<>();
         for (String each : availableTargetNames) {
             for (Long value : shardingValue.getValues()) {
+                System.out.println("targetName:" + each + ", shardingValue:" + value);
                 if (each.endsWith(String.valueOf(value))) {
                     result.add(each);
                 }

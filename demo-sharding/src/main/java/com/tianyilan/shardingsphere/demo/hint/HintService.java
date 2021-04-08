@@ -5,7 +5,13 @@ import java.sql.SQLException;
 
 public interface HintService {
 
-	public void processWithHintValueForShardingDatabases() throws SQLException, IOException;
+	/**
+	 * Hint 分库策略测试 -> 指定分库
+	 * @param databaseIdx 分库index
+	 * @throws SQLException
+	 * @throws IOException
+	 */
+	public void processWithHintValueForShardingDatabases(long databaseIdx) throws SQLException, IOException;
 	
 	public void processWithHintValueForShardingDatabasesAndTables() throws SQLException, IOException;
 	

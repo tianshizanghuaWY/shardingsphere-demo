@@ -11,16 +11,30 @@ import javax.sql.DataSource;
 import org.apache.shardingsphere.api.hint.HintManager;
 import org.springframework.stereotype.Service;
 
+/**
+ * HintManager : 一个基于 ThreadLocal 的用于存储 Hint 规则的容器，使用它可以指定
+ * 1) 数据库分片值
+ * 2）数据表分片值
+ * 3）是否只数据库分片
+ * 4）是否只路由master
+ */
 @Service
 public class HintServiceImpl implements HintService {
 
 	@Override
-	public void processWithHintValueForShardingDatabases() throws SQLException, IOException {
+	public void processWithHintValueForShardingDatabases(long databaseIdx) throws SQLException, IOException {
+
+		//根据 Yaml配置初始化 -> ShardingDataSource
 		DataSource dataSource = DataSourceHelper.getDataSourceForShardingDatabases();
+
+		//HintManager、Connection、Statement 都实现了 AutoCloseable
+		//JDK1.7 后，try 后，自动调用他们的 close() 方法
 		try (HintManager hintManager = HintManager.getInstance();
 				Connection connection = dataSource.getConnection();
 				Statement statement = connection.createStatement()) {
-			HintManagerHelper.initializeHintManagerForShardingDatabases(hintManager);
+
+			//指定分库 -> HintShardingStrady
+			HintManagerHelper.initializeHintManagerForShardingDatabases(hintManager, databaseIdx);
 
 			ResultSet result = statement.executeQuery("select user_id, user_name from user");
 			

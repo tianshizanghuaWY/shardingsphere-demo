@@ -12,6 +12,12 @@ import org.apache.shardingsphere.shardingjdbc.api.yaml.YamlShardingDataSourceFac
 
 public class DataSourceHelper {
 
+    /**
+     * 根据 Yaml 配置获取 datasource
+     * @return
+     * @throws IOException
+     * @throws SQLException
+     */
 	static DataSource getDataSourceForShardingDatabases() throws IOException, SQLException {
 		return YamlShardingDataSourceFactory.createDataSource(getFile("/hint/hint-databases.yaml")); 
     }
